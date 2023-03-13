@@ -3,7 +3,7 @@ import _thread as thread
 import os
 
 
-def clientThread(conn,addr):
+def client_thread(conn,addr):
     conn.send(bytes('Welcome to chat'.encode()))
     x = len(lst)
     while True:
@@ -12,11 +12,11 @@ def clientThread(conn,addr):
         filesize = int(conn.recv(1024).decode())
         f = open('new_' + (filename), 'wb')
         data = conn.recv(1024)
-        totalRecv = len(data)
+        total_recv = len(data)
         f.write(data)
-        while totalRecv < filesize:
+        while total_recv < filesize:
             data = conn.recv(1024)
-            totalRecv += len(data)
+            total_recv += len(data)
             f.write(data)
         print("Download Complete!")
         f.close()
@@ -32,11 +32,11 @@ def broadcast(msg,cli,filename):
         s.send(str(os.path.getsize(filename)).encode())
 
         with open(filename, 'rb') as f:
-            bytesToSend = f.read(1024)
-            s.send(bytesToSend)
-            while bytesToSend != "":
-                bytesToSend = f.read(1024)
-                s.send(bytesToSend)
+            bytes_to_send = f.read(1024)
+            s.send(bytes_to_send)
+            while bytes_to_send != "":
+                bytes_to_send = f.read(1024)
+                s.send(bytes_to_send)
         f.close()
     else:
         for i in lst:
@@ -50,11 +50,11 @@ def broadcast(msg,cli,filename):
 
                 #sending file
                 with open(filename,'rb') as f:
-                    bytesToSend = f.read(1024)
-                    s.send(bytesToSend)
-                    while bytesToSend != "":
-                        bytesToSend = f.read(1024)
-                        s.send(bytesToSend)
+                    bytes_to_send = f.read(1024)
+                    s.send(bytes_to_send)
+                    while bytes_to_send != "":
+                        bytes_to_send = f.read(1024)
+                        s.send(bytes_to_send)
                 f.close()
 
     os.remove(filename)
@@ -75,7 +75,6 @@ while True:
     conn,addr = server.accept()
     print("Client connected : [" +str(addr) + "]")
     lst.append(conn)
-    thread.start_new_thread(clientThread,(conn,addr))
+    thread.start_new_thread(client_thread,(conn,addr))
 
 server.close()
-        
