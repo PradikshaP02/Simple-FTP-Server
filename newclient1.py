@@ -6,7 +6,6 @@ def task1():
     conn=s
     while True:
         message = conn.recv(1024).decode()
-        message = conn.recv(1024).decode()
         temp = conn.recv(1024).decode()
         filename=temp
         filesize=int(conn.recv(1024).decode())
@@ -16,11 +15,11 @@ def task1():
 
         f=open('new_'+(filename),'wb')
         data=conn.recv(1024)
-        totalRecv = len(data)
+        total_recv = len(data)
         f.write(data)
-        while totalRecv < filesize:
+        while total_recv < filesize:
             data = s.recv(1024)
-            totalRecv += len(data)
+            total_recv += len(data)
             f.write(data)
         print("Download complete")
         f.close()
@@ -42,11 +41,11 @@ def task2():
         s.send(str(os.path.getsize(filename)).encode())
 
         with open(filename , 'rb') as f:
-                 bytesToSend = f.read(1024)
-                 s.send(bytesToSend)
-                 while bytesToSend != "":
-                     bytesToSend = f.read(1024)
-                     s.send(bytesToSend)
+                 bytes_to_send = f.read(1024)
+                 s.send(bytes_to_send)
+                 while bytes_to_send != "":
+                     bytes_to_send = f.read(1024)
+                     s.send(bytes_to_send)
         f.close()
 
 
@@ -66,6 +65,3 @@ t2.start()
 
 t1.join()
 t2.join()
-
-                    
-        
